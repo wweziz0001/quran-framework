@@ -1,0 +1,166 @@
+{
+  "menus": [
+    {
+      "id": "menu_quran_root",
+      "name": "Quran",
+      "web_icon": "quran,static/description/icon.png",
+      "sequence": 10
+    },
+    {
+      "id": "menu_quran_dashboard",
+      "name": "Dashboard",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_dashboard",
+      "sequence": 1
+    },
+    {
+      "id": "menu_quran_read",
+      "name": "Read Quran",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_reader",
+      "sequence": 5
+    },
+    {
+      "id": "menu_quran_surah",
+      "name": "Surahs",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_surah",
+      "sequence": 10
+    },
+    {
+      "id": "menu_quran_ayah",
+      "name": "Ayahs",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_ayah",
+      "sequence": 15
+    },
+    {
+      "id": "menu_quran_bookmark",
+      "name": "Bookmarks",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_bookmark",
+      "sequence": 20
+    },
+    {
+      "id": "menu_quran_memorization",
+      "name": "Memorization",
+      "parent_id": "menu_quran_root",
+      "sequence": 30,
+      "groups_id": ["group_quran_student"]
+    },
+    {
+      "id": "menu_quran_memorization_plan",
+      "name": "My Plans",
+      "parent_id": "menu_quran_memorization",
+      "action": "action_quran_memorization_plan",
+      "sequence": 1
+    },
+    {
+      "id": "menu_quran_memorization_progress",
+      "name": "Progress",
+      "parent_id": "menu_quran_memorization",
+      "action": "action_quran_memorization_progress",
+      "sequence": 5
+    },
+    {
+      "id": "menu_quran_memorization_revision",
+      "name": "Revisions",
+      "parent_id": "menu_quran_memorization",
+      "action": "action_quran_revision_schedule",
+      "sequence": 10
+    },
+    {
+      "id": "menu_quran_tafsir",
+      "name": "Tafsir",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_tafsir",
+      "sequence": 40
+    },
+    {
+      "id": "menu_quran_audio",
+      "name": "Audio",
+      "parent_id": "menu_quran_root",
+      "sequence": 50
+    },
+    {
+      "id": "menu_quran_reciter",
+      "name": "Reciters",
+      "parent_id": "menu_quran_audio",
+      "action": "action_quran_reciter",
+      "sequence": 1
+    },
+    {
+      "id": "menu_quran_recitation",
+      "name": "Recitations",
+      "parent_id": "menu_quran_audio",
+      "action": "action_quran_recitation",
+      "sequence": 5
+    },
+    {
+      "id": "menu_quran_config",
+      "name": "Configuration",
+      "parent_id": "menu_quran_root",
+      "sequence": 100,
+      "groups_id": ["group_quran_manager"]
+    },
+    {
+      "id": "menu_quran_translation_source",
+      "name": "Translations",
+      "parent_id": "menu_quran_config",
+      "action": "action_quran_translation_source",
+      "sequence": 10
+    },
+    {
+      "id": "menu_quran_tafsir_source",
+      "name": "Tafsir Sources",
+      "parent_id": "menu_quran_config",
+      "action": "action_quran_tafsir_source",
+      "sequence": 20
+    },
+    {
+      "id": "menu_quran_mushaf_edition",
+      "name": "Mushaf Editions",
+      "parent_id": "menu_quran_config",
+      "action": "action_quran_mushaf_edition",
+      "sequence": 30
+    },
+    {
+      "id": "menu_quran_achievement",
+      "name": "Achievements",
+      "parent_id": "menu_quran_config",
+      "action": "action_quran_achievement",
+      "sequence": 40
+    },
+    {
+      "id": "menu_quran_settings",
+      "name": "Settings",
+      "parent_id": "menu_quran_config",
+      "action": "action_quran_settings",
+      "sequence": 50
+    }
+  ],
+  "actions": [
+    {
+      "id": "action_quran_dashboard",
+      "name": "Dashboard",
+      "res_model": "quran.dashboard",
+      "view_mode": "kanban",
+      "target": "current"
+    },
+    {
+      "id": "action_quran_reader",
+      "name": "Read Quran",
+      "type": "client",
+      "tag": "quran_reader",
+      "target": "current"
+    },
+    {
+      "id": "action_quran_bookmark",
+      "name": "Bookmarks",
+      "res_model": "quran.bookmark",
+      "view_mode": "kanban,tree,form",
+      "domain": [["user_id", "=", "uid"]],
+      "context": { "search_default_user_id": "uid" }
+    }
+  ]
+}

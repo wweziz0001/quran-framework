@@ -1,0 +1,171 @@
+{
+  "access_rights": [
+    {
+      "id": "access_quran_surah_user",
+      "name": "quran.surah.user",
+      "model_id": "model_quran_surah",
+      "group_id": "group_quran_user",
+      "perm_read": true,
+      "perm_write": false,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "id": "access_quran_surah_manager",
+      "name": "quran.surah.manager",
+      "model_id": "model_quran_surah",
+      "group_id": "group_quran_manager",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "access_quran_ayah_user",
+      "name": "quran.ayah.user",
+      "model_id": "model_quran_ayah",
+      "group_id": "group_quran_user",
+      "perm_read": true,
+      "perm_write": false,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "id": "access_quran_ayah_manager",
+      "name": "quran.ayah.manager",
+      "model_id": "model_quran_ayah",
+      "group_id": "group_quran_manager",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "access_quran_bookmark_user",
+      "name": "quran.bookmark.user",
+      "model_id": "model_quran_bookmark",
+      "group_id": "group_quran_reader",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "access_quran_translation_user",
+      "name": "quran.translation.user",
+      "model_id": "model_quran_translation",
+      "group_id": "group_quran_user",
+      "perm_read": true,
+      "perm_write": false,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "id": "access_quran_tafsir_user",
+      "name": "quran.tafsir.user",
+      "model_id": "model_quran_tafsir",
+      "group_id": "group_quran_user",
+      "perm_read": true,
+      "perm_write": false,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "id": "access_quran_memorization_plan_student",
+      "name": "quran.memorization.plan.student",
+      "model_id": "model_quran_memorization_plan",
+      "group_id": "group_quran_student",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "access_quran_memorization_plan_teacher",
+      "name": "quran.memorization.plan.teacher",
+      "model_id": "model_quran_memorization_plan",
+      "group_id": "group_quran_teacher",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "id": "access_quran_progress_student",
+      "name": "quran.progress.student",
+      "model_id": "model_quran_memorization_progress",
+      "group_id": "group_quran_student",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "access_quran_achievement_user",
+      "name": "quran.achievement.user",
+      "model_id": "model_quran_achievement",
+      "group_id": "group_quran_user",
+      "perm_read": true,
+      "perm_write": false,
+      "perm_create": false,
+      "perm_unlink": false
+    }
+  ],
+  "record_rules": [
+    {
+      "id": "rule_quran_bookmark_user",
+      "name": "Own Bookmarks",
+      "model_id": "model_quran_bookmark",
+      "group_id": "group_quran_reader",
+      "domain_force": "[['user_id', '=', user.id]]",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "rule_quran_memorization_plan_user",
+      "name": "Own Memorization Plans",
+      "model_id": "model_quran_memorization_plan",
+      "group_id": "group_quran_student",
+      "domain_force": "[['user_id', '=', user.id]]",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "rule_quran_memorization_plan_teacher",
+      "name": "All Students Plans (Teacher)",
+      "model_id": "model_quran_memorization_plan",
+      "group_id": "group_quran_teacher",
+      "domain_force": "[['teacher_id', '=', user.id]]",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "id": "rule_quran_progress_user",
+      "name": "Own Progress",
+      "model_id": "model_quran_memorization_progress",
+      "group_id": "group_quran_student",
+      "domain_force": "[['user_id', '=', user.id]]",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "id": "rule_quran_user_settings_user",
+      "name": "Own Settings",
+      "model_id": "model_quran_user_settings",
+      "group_id": "group_quran_user",
+      "domain_force": "[['user_id', '=', user.id]]",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    }
+  ]
+}

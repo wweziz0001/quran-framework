@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,20 +10,500 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ==================== Base Models ====================
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  passwordHash      String
+  name              String?
+  avatarUrl         String?
+  
+  // Groups
+  groups            UserGroup[] @relation("UserToGroup")
+  
+  // Quran relations
+  bookmarks         QuranBookmark[]
+  readingHistory    QuranReadingHistory[]
+  memorizationPlans QuranMemorizationPlan[]
+  achievements      QuranAchievement[]
+  userSettings      QuranUserSettings?
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastLoginAt       DateTime?
+  isActive          Boolean   @default(true)
+  
+  @@index([email])
+  @@index([isActive])
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UserGroup {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String
+  category    String?
+  impliedIds  String   // JSON string of group IDs
+  
+  users       User[]   @relation("UserToGroup")
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([name])
+}
+
+// ==================== Quran Models ====================
+
+model QuranSurah {
+  id                  Int     @id @default(autoincrement())
+  number              Int     @unique
+  nameArabic          String
+  nameEnglish         String
+  nameTransliteration String?
+  
+  // Classification
+  revelationType      String  @default("makki") // makki, madani
+  revelationOrder     Int?
+  
+  // Content
+  totalAyahs          Int
+  
+  // Location
+  pageNumberStart     Int?
+  juzNumberStart      Int?
+  
+  // Statistics
+  wordCount           Int     @default(0)
+  letterCount         Int     @default(0)
+  
+  // Description
+  description         String?
+  themes              String?
+  
+  // Relations
+  ayahs               QuranAyah[]
+  recitations         QuranRecitation[]
+  tafsirEntries       QuranTafsirEntry[]
+  
+  // Timestamps
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  active              Boolean  @default(true)
+  
+  @@index([revelationType])
+  @@index([number])
+}
+
+model QuranAyah {
+  id               Int               @id @default(autoincrement())
+  surahId          Int
+  ayahNumber       Int
+  ayahNumberGlobal Int               @unique
+  
+  // Text variations
+  textArabic       String
+  textUthmani      String?
+  textIndopak      String?
+  textClean        String?           // Without diacritics
+  
+  // Location
+  pageNumber       Int?
+  juzNumber        Int?
+  hizbNumber       Int?
+  rubNumber        Int?
+  quarterNumber    Int?
+  manzilNumber     Int?
+  
+  // Special markers
+  sajdah           Boolean           @default(false)
+  sajdahType       String?           // obligatory, recommended
+  sajdahNumber     Int?
+  
+  // Statistics
+  wordCount        Int?
+  letterCount      Int?
+  
+  // Relations
+  surah            QuranSurah        @relation(fields: [surahId], references: [id], onDelete: Cascade)
+  bookmarks        QuranBookmark[]
+  readingHistory   QuranReadingHistory[]
+  recitationAyahs  QuranRecitationAyah[]
+  tafsirEntries    QuranTafsirEntry[]
+  translationEntries QuranTranslationEntry[]
+  memorizationProgress QuranMemorizationProgress[]
+  
+  // Timestamps
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  active           Boolean           @default(true)
+  
+  @@unique([surahId, ayahNumber])
+  @@index([juzNumber])
+  @@index([pageNumber])
+  @@index([ayahNumberGlobal])
+}
+
+// ==================== Translation ====================
+
+model QuranTranslationSource {
+  id               String  @id
+  name             String
+  language         String
+  languageCode     String  @unique
+  author           String?
+  description      String?
+  isDefault        Boolean @default(false)
+  isActive         Boolean @default(true)
+  
+  entries          QuranTranslationEntry[]
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  @@index([isDefault])
+  @@index([languageCode])
+}
+
+model QuranTranslationEntry {
+  id          String                @id @default(cuid())
+  ayahId      Int
+  sourceId    String
+  text        String
+  footnotes   String?
+  
+  ayah        QuranAyah             @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+  source      QuranTranslationSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  
+  @@unique([ayahId, sourceId])
+  @@index([sourceId])
+}
+
+// ==================== Tafsir ====================
+
+model QuranTafsirSource {
+  id            String             @id
+  nameArabic    String
+  nameEnglish   String
+  slug          String             @unique
+  authorArabic  String?
+  authorEnglish String?
+  description   String?
+  language      String             @default("ar")
+  isDefault     Boolean            @default(false)
+  isActive      Boolean            @default(true)
+  
+  entries       QuranTafsirEntry[]
+  
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  
+  @@index([isDefault])
+  @@index([language])
+}
+
+model QuranTafsirEntry {
+  id               String            @id @default(cuid())
+  surahId          Int
+  ayahId           Int
+  sourceId         String
+  textArabic       String?
+  textTranslation  String?
+  htmlContent      String?
+  wordExplanations String?          // JSON
+  
+  surah            QuranSurah        @relation(fields: [surahId], references: [id], onDelete: Cascade)
+  ayah             QuranAyah         @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+  source           QuranTafsirSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  
+  @@unique([ayahId, sourceId])
+  @@index([sourceId])
+  @@index([surahId])
+}
+
+// ==================== Audio ====================
+
+model QuranReciter {
+  id             String           @id @default(cuid())
+  nameArabic     String
+  nameEnglish    String
+  slug           String           @unique
+  bio            String?
+  imageUrl       String?
+  country        String?
+  deathYear      Int?
+  
+  hasHighQuality Boolean          @default(false)
+  hasGapless     Boolean          @default(false)
+  totalDownloads Int              @default(0)
+  popularity     Int              @default(0)
+  isActive       Boolean          @default(true)
+  
+  recitations    QuranRecitation[]
+  
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  
+  @@index([popularity])
+  @@index([isActive])
+}
+
+model QuranRecitation {
+  id              String              @id @default(cuid())
+  surahId         Int
+  reciterId       String
+  style           String
+  bitrate         Int                 @default(128)
+  format          String              @default("mp3")
+  
+  audioUrl        String
+  audioUrlHd      String?
+  timingDataUrl   String?
+  
+  fileSize        Int?
+  durationSeconds Int?
+  downloadCount   Int                 @default(0)
+  
+  isActive        Boolean             @default(true)
+  
+  surah           QuranSurah          @relation(fields: [surahId], references: [id], onDelete: Cascade)
+  reciter         QuranReciter        @relation(fields: [reciterId], references: [id], onDelete: Cascade)
+  ayahTimings     QuranRecitationAyah[]
+  
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  
+  @@unique([surahId, reciterId, style])
+  @@index([surahId])
+  @@index([reciterId])
+}
+
+model QuranRecitationAyah {
+  id           String         @id @default(cuid())
+  recitationId String
+  ayahId       Int
+  startTimeMs  Int
+  endTimeMs    Int
+  audioUrl     String?
+  
+  recitation   QuranRecitation @relation(fields: [recitationId], references: [id], onDelete: Cascade)
+  ayah         QuranAyah       @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+  
+  createdAt    DateTime       @default(now())
+  
+  @@unique([recitationId, ayahId])
+  @@index([ayahId])
+}
+
+// ==================== User Data ====================
+
+model QuranBookmark {
+  id        String      @id @default(cuid())
+  userId    Int
+  ayahId    Int
+  type      String      @default("BOOKMARK")
+  note      String?
+  color     String?
+  
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ayah      QuranAyah   @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  @@unique([userId, ayahId, type])
+  @@index([userId])
+  @@index([ayahId])
+}
+
+model QuranReadingHistory {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  ayahId          Int
+  lastReadAt      DateTime @default(now())
+  readCount       Int      @default(1)
+  durationSeconds Int?
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ayah            QuranAyah @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, ayahId])
+  @@index([userId])
+  @@index([lastReadAt])
+}
+
+model QuranUserSettings {
+  id                   String   @id @default(cuid())
+  userId               Int      @unique
+  fontSize             Float    @default(1.0)
+  fontFamily           String   @default("uthmani")
+  showTajweed          Boolean  @default(false)
+  showTranslation      Boolean  @default(true)
+  preferredTranslation String?
+  defaultReciterId     String?
+  audioSpeed           Float    @default(1.0)
+  autoPlay             Boolean  @default(false)
+  dailyReminder        Boolean  @default(false)
+  reminderTime         String?
+  theme                String   @default("system")
+  language             String   @default("ar")
+  
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+// ==================== Memorization ====================
+
+model QuranMemorizationPlan {
+  id              Int   @id @default(autoincrement())
+  userId          Int
+  name            String
+  description     String?
+  
+  // Settings
+  planType        String          @default("daily")
+  dailyNewAyahs   Int             @default(5)
+  dailyRevision   Int             @default(10)
+  revisionMethod  String          @default("spaced")
+  
+  // Progress
+  currentSurahId  Int?
+  currentAyah     Int?
+  totalMemorized  Int             @default(0)
+  
+  // State
+  state           String          @default("draft")
+  
+  // Dates
+  startDate       DateTime?
+  targetDate      DateTime?
+  endDate         DateTime?
+  
+  // Statistics
+  streakDays      Int             @default(0)
+  longestStreak   Int             @default(0)
+  lastActivity    DateTime?
+  
+  // Relations
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress        QuranMemorizationProgress[]
+  revisions       QuranRevisionSchedule[]
+  achievements    QuranAchievement[]
+  
+  // Timestamps
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  active          Boolean         @default(true)
+  
+  @@index([userId])
+  @@index([state])
+}
+
+model QuranMemorizationProgress {
+  id               Int                      @id @default(autoincrement())
+  planId           Int
+  userId           Int
+  ayahId           Int
+  surahId          Int
+  
+  // State
+  state            String                   @default("learning")
+  
+  // Statistics
+  revisionCount    Int                      @default(0)
+  correctCount     Int                      @default(0)
+  mistakeCount     Int                      @default(0)
+  
+  // Quality rating
+  qualityRating    Int?
+  
+  // Spaced Repetition
+  easeFactor       Float                    @default(2.5)
+  intervalDays     Int                      @default(1)
+  
+  // Dates
+  firstMemorized   DateTime?
+  lastRevised      DateTime?
+  nextRevision     DateTime?
+  
+  // Relations
+  plan             QuranMemorizationPlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  ayah             QuranAyah                @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @updatedAt
+  
+  @@unique([planId, ayahId])
+  @@index([userId])
+  @@index([state])
+  @@index([nextRevision])
+}
+
+model QuranRevisionSchedule {
+  id            Int                    @id @default(autoincrement())
+  planId        Int
+  userId        Int
+  scheduledDate DateTime
+  revisionType  String                 @default("daily")
+  state         String                 @default("pending")
+  
+  // Progress
+  totalAyahs    Int                    @default(0)
+  completedAyahs Int                   @default(0)
+  correctAyahs  Int                    @default(0)
+  incorrectAyahs Int                   @default(0)
+  
+  // Time
+  startedAt     DateTime?
+  completedAt   DateTime?
+  
+  // Relations
+  plan          QuranMemorizationPlan  @relation(fields: [planId], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  
+  @@index([userId])
+  @@index([scheduledDate])
+  @@index([state])
+}
+
+model QuranAchievement {
+  id               Int                   @id @default(autoincrement())
+  userId           Int
+  planId           Int?
+  
+  achievementType  String
+  referenceId      String?
+  title            String
+  description      String?
+  
+  // Reward
+  points           Int                   @default(0)
+  badgeIcon        String?
+  badgeColor       String                @default("#FFD700")
+  
+  // Social
+  isShared         Boolean               @default(false)
+  sharedAt         DateTime?
+  
+  // Relations
+  user             User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan             QuranMemorizationPlan? @relation(fields: [planId], references: [id], onDelete: SetNull)
+  
+  achievedAt       DateTime              @default(now())
+  
+  @@unique([userId, achievementType, referenceId])
+  @@index([userId])
+  @@index([achievementType])
 }

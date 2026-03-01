@@ -1,0 +1,34 @@
+{
+  "name": "quran",
+  "version": "1.0.0",
+  "summary": "Quran Core Module",
+  "description": "Core Quran module with Surah, Ayah, Translation, and Tafsir models",
+  "author": "Quran Platform Team",
+  "license": "LGPL-3",
+  "category": "Quran",
+  "depends": ["base"],
+  "data": [
+    "security/quran_security.json",
+    "security/quran_acl.json",
+    "views/quran_surah_views.json",
+    "views/quran_ayah_views.json",
+    "views/quran_translation_views.json",
+    "views/quran_tafsir_views.json",
+    "views/quran_menu_views.json"
+  ],
+  "demo": [
+    "data/demo_quran.json"
+  ],
+  "assets": {
+    "web.assets_frontend": [
+      "quran/static/src/css/quran_reader.css",
+      "quran/static/src/js/quran_reader.js"
+    ],
+    "web.assets_backend": [
+      "quran/static/src/js/quran_widgets.js"
+    ]
+  },
+  "installable": true,
+  "application": true,
+  "autoInstall": false
+}

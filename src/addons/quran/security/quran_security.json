@@ -1,0 +1,52 @@
+{
+  "groups": [
+    {
+      "id": "group_quran_user",
+      "name": "Quran User",
+      "category_id": "module_category_quran",
+      "comment": "Basic user - can read Quran content"
+    },
+    {
+      "id": "group_quran_reader",
+      "name": "Quran Reader",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_quran_user"],
+      "comment": "Can read Quran, add bookmarks, manage personal reading history"
+    },
+    {
+      "id": "group_quran_student",
+      "name": "Quran Student",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_quran_reader"],
+      "comment": "Can track memorization progress, set goals, receive reminders"
+    },
+    {
+      "id": "group_quran_teacher",
+      "name": "Quran Teacher",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_quran_student"],
+      "comment": "Can manage students, view their progress, provide feedback"
+    },
+    {
+      "id": "group_quran_reciter",
+      "name": "Quran Reciter",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_quran_user"],
+      "comment": "Can manage own recitation recordings"
+    },
+    {
+      "id": "group_quran_manager",
+      "name": "Quran Manager",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_quran_teacher"],
+      "comment": "Full access to Quran content management"
+    },
+    {
+      "id": "group_quran_admin",
+      "name": "Quran Administrator",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_quran_manager"],
+      "comment": "Full administrative access to all Quran features"
+    }
+  ]
+}

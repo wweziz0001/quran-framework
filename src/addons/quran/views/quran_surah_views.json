@@ -1,0 +1,172 @@
+{
+  "views": [
+    {
+      "id": "view_quran_surah_tree",
+      "name": "quran.surah.tree",
+      "model": "quran.surah",
+      "type": "tree",
+      "arch": {
+        "string": "Surahs",
+        "decoration-info": "revelation_type == 'makki'",
+        "decoration-warning": "revelation_type == 'madani'",
+        "fields": [
+          { "name": "number", "readonly": true, "class": "fw-bold" },
+          { "name": "name_arabic", "readonly": true, "class": "text-end fw-bold", "style": "font-size: 18px; direction: rtl;" },
+          { "name": "name_english", "readonly": true },
+          { "name": "total_ayahs", "readonly": true, "sum": "Total" },
+          { "name": "revelation_type", "readonly": true, "widget": "badge" },
+          { "name": "page_number_start", "readonly": true },
+          { "name": "juz_number_start", "readonly": true }
+        ]
+      }
+    },
+    {
+      "id": "view_quran_surah_form",
+      "name": "quran.surah.form",
+      "model": "quran.surah",
+      "type": "form",
+      "arch": {
+        "header": {
+          "buttons": [
+            { "name": "action_view_ayahs", "string": "View Ayahs", "type": "object", "class": "btn-primary" },
+            { "name": "action_view_recitations", "string": "View Recitations", "type": "object" }
+          ]
+        },
+        "sheet": {
+          "div": {
+            "class": "oe_title",
+            "h1": [
+              { "field": "number", "readonly": true, "class": "oe_inline" },
+              ". ",
+              { "field": "name_english", "readonly": true, "class": "oe_inline" }
+            ],
+            "h2": {
+              "field": "name_arabic",
+              "readonly": true,
+              "class": "text-end",
+              "style": "direction: rtl; font-size: 28px;"
+            }
+          },
+          "group": [
+            {
+              "group": [
+                { "field": "revelation_type", "readonly": true, "widget": "radio" },
+                { "field": "revelation_order", "readonly": true },
+                { "field": "total_ayahs", "readonly": true },
+                { "field": "ayah_count", "readonly": true }
+              ],
+              "group": [
+                { "field": "page_number_start", "readonly": true },
+                { "field": "page_number_end", "readonly": true },
+                { "field": "juz_number_start", "readonly": true },
+                { "field": "juz_number_end", "readonly": true }
+              ]
+            }
+          ],
+          "notebook": [
+            {
+              "page": {
+                "string": "Description",
+                "field": "description", "readonly": true
+              }
+            },
+            {
+              "page": {
+                "string": "Ayahs",
+                "field": "ayah_ids",
+                "readonly": true,
+                "context": { "default_surah_id": "id" },
+                "domain": []
+              }
+            },
+            {
+              "page": {
+                "string": "Recitations",
+                "field": "recitation_ids",
+                "readonly": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "view_quran_surah_kanban",
+      "name": "quran.surah.kanban",
+      "model": "quran.surah",
+      "type": "kanban",
+      "arch": {
+        "default_group_by": "revelation_type",
+        "fields": ["id", "number", "name_arabic", "name_english", "total_ayahs"],
+        "templates": {
+          "kanban-box": {
+            "div": {
+              "class": "oe_kanban_card",
+              "div": {
+                "class": "text-center",
+                "span": { "class": "badge bg-primary", "field": "number" },
+                "h4": { "field": "name_english" },
+                "h3": { "class": "text-end", "style": "direction: rtl;", "field": "name_arabic" },
+                "div": {
+                  "class": "mt-2",
+                  "span": {
+                    "class": "badge",
+                    "t-attf-class": "bg-#{record.revelation_type == 'makki' ? 'info' : 'warning'}",
+                    "field": "revelation_type"
+                  },
+                  "small": { "class": "ms-2", "text": "${record.total_ayahs} Ayahs" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "view_quran_surah_search",
+      "name": "quran.surah.search",
+      "model": "quran.surah",
+      "type": "search",
+      "arch": {
+        "fields": ["name_arabic", "name_english", "number"],
+        "filters": [
+          { "string": "Makki", "name": "makki", "domain": [["revelation_type", "=", "makki"]] },
+          { "string": "Madani", "name": "madani", "domain": [["revelation_type", "=", "madani"]] }
+        ],
+        "group_by": [
+          { "string": "Revelation Type", "name": "group_revelation", "context": { "group_by": "revelation_type" } },
+          { "string": "Juz", "name": "group_juz", "context": { "group_by": "juz_number_start" } }
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "action_quran_surah",
+      "name": "Surahs",
+      "res_model": "quran.surah",
+      "view_mode": "kanban,tree,form",
+      "search_view_id": "view_quran_surah_search",
+      "help": {
+        "class": "o_view_nocontent_smiling_face",
+        "p": "No Surahs found",
+        "p": "The Quran contains 114 Surahs."
+      }
+    }
+  ],
+  "menus": [
+    {
+      "id": "menu_quran_root",
+      "name": "Quran",
+      "web_icon": "quran,static/description/icon.png",
+      "sequence": 10
+    },
+    {
+      "id": "menu_quran_surah",
+      "name": "Surahs",
+      "parent_id": "menu_quran_root",
+      "action": "action_quran_surah",
+      "sequence": 10
+    }
+  ]
+}
