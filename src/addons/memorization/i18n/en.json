@@ -1,0 +1,50 @@
+{
+  "module": {
+    "name": "Memorization & Review",
+    "description": "Quran Memorization and Review Module"
+  },
+  "plan": {
+    "title": "Memorization Plan",
+    "create": "Create New Plan",
+    "edit": "Edit Plan",
+    "delete": "Delete Plan",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "custom": "Custom",
+    "newAyahs": "New Ayahs Daily",
+    "revisionAyahs": "Ayahs for Revision"
+  },
+  "progress": {
+    "title": "Progress",
+    "memorized": "Memorized",
+    "reviewing": "Under Review",
+    "learning": "Learning",
+    "totalAyahs": "Total Ayahs",
+    "streak": "Day Streak"
+  },
+  "revision": {
+    "title": "Revision",
+    "today": "Today's Revision",
+    "due": "Due",
+    "completed": "Completed",
+    "remaining": "Remaining"
+  },
+  "achievement": {
+    "title": "Achievements",
+    "unlocked": "Unlocked",
+    "points": "points",
+    "level": "Level"
+  },
+  "method": {
+    "sm2": "SM-2 Algorithm",
+    "spaced": "Spaced Repetition",
+    "description": "Optimal method for memorization and review"
+  },
+  "common": {
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "complete": "Complete",
+    "cancel": "Cancel"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "access": [
+    {
+      "model": "quran.memorization.plan",
+      "group": "group_memorization_user",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": true
+    },
+    {
+      "model": "quran.memorization.plan",
+      "group": "group_memorization_teacher",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": false,
+      "perm_unlink": false
+    },
+    {
+      "model": "quran.memorization.progress",
+      "group": "group_memorization_user",
+      "perm_read": true,
+      "perm_write": true,
+      "perm_create": true,
+      "perm_unlink": false
+    },
+    {
+      "model": "quran.achievement",
+      "group": "group_memorization_user",
+      "perm_read": true,
+      "perm_write": false,
+      "perm_create": false,
+      "perm_unlink": false
+    }
+  ]
+}

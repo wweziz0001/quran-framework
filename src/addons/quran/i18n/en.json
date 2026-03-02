@@ -1,0 +1,103 @@
+{
+  "module": {
+    "name": "Holy Quran",
+    "description": "Quran Module - Reading, Tajweed, and Tafsir"
+  },
+  "menu": {
+    "quran": "Quran",
+    "surahs": "Surahs",
+    "mushaf": "Mushaf",
+    "reciters": "Reciters",
+    "tafsir": "Tafsir",
+    "translations": "Translations",
+    "bookmarks": "Bookmarks",
+    "search": "Search",
+    "settings": "Settings"
+  },
+  "surah": {
+    "title": "Surah",
+    "ayahs": "Ayahs",
+    "makki": "Makki",
+    "madani": "Madani",
+    "revelationOrder": "Revelation Order",
+    "juz": "Juz",
+    "hizb": "Hizb",
+    "page": "Page"
+  },
+  "ayah": {
+    "title": "Ayah",
+    "number": "Ayah Number",
+    "text": "Ayah Text",
+    "translation": "Translation",
+    "tafsir": "Tafsir",
+    "wordCount": "Word Count",
+    "letterCount": "Letter Count"
+  },
+  "audio": {
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "next": "Next",
+    "previous": "Previous",
+    "repeat": "Repeat",
+    "speed": "Speed",
+    "reciter": "Reciter",
+    "selectReciter": "Select Reciter"
+  },
+  "mushaf": {
+    "imageMode": "Image Mode",
+    "ttfMode": "TTF Mode",
+    "pageNumber": "Page Number",
+    "nextPage": "Next Page",
+    "previousPage": "Previous Page",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out"
+  },
+  "tajweed": {
+    "title": "Tajweed",
+    "showTajweed": "Show Coloring",
+    "hideTajweed": "Hide Coloring",
+    "madd": "Madd (Elongation)",
+    "ghunnah": "Ghunnah (Nasalization)",
+    "idgham": "Idgham (Merging)",
+    "iqlab": "Iqlab (Conversion)",
+    "ikhfa": "Ikhfa (Hiding)",
+    "qalqalah": "Qalqalah (Bouncing)"
+  },
+  "bookmark": {
+    "add": "Add Bookmark",
+    "remove": "Remove Bookmark",
+    "edit": "Edit",
+    "note": "Note",
+    "color": "Color"
+  },
+  "search": {
+    "placeholder": "Search in Quran...",
+    "results": "Results",
+    "noResults": "No results found",
+    "foundIn": "Found in"
+  },
+  "settings": {
+    "fontSize": "Font Size",
+    "fontFamily": "Font Family",
+    "uthmani": "Uthmani",
+    "indopak": "Indopak",
+    "showTranslation": "Show Translation",
+    "defaultReciter": "Default Reciter",
+    "darkMode": "Dark Mode",
+    "language": "Language"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
+  "sajdah": "Prostration"
+}

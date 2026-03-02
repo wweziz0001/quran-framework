@@ -1,0 +1,88 @@
+{
+  "views": [
+    {
+      "id": "view_memorization_plan_form",
+      "name": "Memorization Plan Form",
+      "model": "quran.memorization.plan",
+      "type": "form",
+      "arch": {
+        "header": {
+          "buttons": [
+            { "name": "action_start", "string": "Start", "type": "object", "class": "btn-primary" },
+            { "name": "action_pause", "string": "Pause", "type": "object" },
+            { "name": "action_complete", "string": "Complete", "type": "object" }
+          ],
+          "statusbar": {
+            "field": "state",
+            "statuses": ["draft", "active", "paused", "completed"]
+          }
+        },
+        "sheet": {
+          "groups": [
+            {
+              "string": "Plan Information",
+              "fields": ["name", "description", "plan_type"]
+            },
+            {
+              "string": "Settings",
+              "fields": ["daily_new_ayahs", "daily_revision", "revision_method"]
+            },
+            {
+              "string": "Progress",
+              "fields": ["current_surah_id", "current_ayah", "total_memorized"]
+            },
+            {
+              "string": "Statistics",
+              "fields": ["streak_days", "longest_streak", "last_activity"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "view_memorization_plan_tree",
+      "name": "Memorization Plan List",
+      "model": "quran.memorization.plan",
+      "type": "tree",
+      "arch": {
+        "fields": ["name", "plan_type", "state", "total_memorized", "streak_days"]
+      }
+    },
+    {
+      "id": "view_memorization_progress_tree",
+      "name": "Memorization Progress",
+      "model": "quran.memorization.progress",
+      "type": "tree",
+      "arch": {
+        "fields": ["surah_id", "ayah_id", "state", "revision_count", "ease_factor", "next_revision"]
+      }
+    }
+  ],
+  "menus": [
+    {
+      "id": "menu_memorization",
+      "name": "Memorization",
+      "parent": "menu_quran_root",
+      "sequence": 20,
+      "action": "action_memorization_dashboard"
+    },
+    {
+      "id": "menu_memorization_plans",
+      "name": "Plans",
+      "parent": "menu_memorization",
+      "action": "action_memorization_plan"
+    },
+    {
+      "id": "menu_memorization_progress",
+      "name": "Progress",
+      "parent": "menu_memorization",
+      "action": "action_memorization_progress"
+    },
+    {
+      "id": "menu_memorization_achievements",
+      "name": "Achievements",
+      "parent": "menu_memorization",
+      "action": "action_memorization_achievements"
+    }
+  ]
+}

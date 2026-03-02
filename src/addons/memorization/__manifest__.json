@@ -1,56 +1,56 @@
 {
   "name": "memorization",
-  "version": "1.0.0",
-  "summary": "Quran Memorization Tracking",
-  "description": "Comprehensive memorization tracking with spaced repetition algorithm, achievements, and gamification",
+  "version": "17.0.1.0.0",
+  "summary": "Quran Memorization Module - Spaced Repetition & Progress Tracking",
+  "description": "Comprehensive memorization module with SM-2 algorithm, spaced repetition, progress tracking, achievements, and daily revision schedules. Following Odoo Framework methodology.",
   "author": "Quran Platform Team",
   "license": "LGPL-3",
   "category": "Quran",
-  "depends": ["base", "quran"],
+  "website": "https://github.com/wweziz0001/quran-framework",
+  "depends": ["quran"],
+  
   "data": [
-    "security/memorization_groups.json",
+    "security/memorization_security.json",
     "security/memorization_acl.json",
-    "security/memorization_rules.json",
-    "data/achievements.json",
-    "views/memorization_plan_views.json",
-    "views/memorization_progress_views.json",
-    "views/revision_schedule_views.json",
-    "views/achievement_views.json",
-    "views/memorization_menu_views.json"
+    "data/achievement_types.ts",
+    "views/memorization_views.json"
   ],
+  
   "demo": [
-    "data/demo_memorization.json"
+    "demo/index.ts"
   ],
-  "workflows": [
-    "models/memorization_plan.py"
-  ],
-  "automation": [
-    "automation/revision_reminder.json",
-    "automation/daily_reminder.json",
-    "automation/achievement_check.json"
-  ],
-  "cron": [
-    {
-      "name": "Daily Revision Reminder",
-      "model": "quran.memorization.plan",
-      "function": "send_daily_reminders",
-      "interval": "days",
-      "interval_number": 1
-    },
-    {
-      "name": "Process Spaced Repetition",
-      "model": "quran.memorization.progress",
-      "function": "process_spaced_repetition",
-      "interval": "hours",
-      "interval_number": 6
-    }
-  ],
+  
   "assets": {
     "web.assets_frontend": [
-      "memorization/static/src/css/memorization.css",
-      "memorization/static/src/js/memorization_dashboard.js"
+      "memorization/static/css/memorization.css",
+      "memorization/static/js/memorization.js"
     ]
   },
+  
+  "i18n": [
+    "i18n/ar.json",
+    "i18n/en.json"
+  ],
+  
+  "controllers": [
+    "controllers/memorization_controller.ts"
+  ],
+  
+  "models": [
+    "models/memorization_plan.ts"
+  ],
+  
+  "features": [
+    "spaced_repetition",
+    "sm2_algorithm",
+    "progress_tracking",
+    "streak_tracking",
+    "achievements",
+    "daily_revision",
+    "statistics",
+    "calendar_view"
+  ],
+  
   "installable": true,
   "application": true,
   "autoInstall": false

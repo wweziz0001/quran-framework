@@ -1,0 +1,288 @@
+/**
+ * Memorization Module Styles
+ * ===========================
+ * CSS for memorization components
+ */
+
+/* ==================== Progress Dashboard ==================== */
+
+.memorization-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.progress-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.progress-card.dark {
+  background: linear-gradient(135deg, #2A2A3E 0%, #1E1E2E 100%);
+  color: #E0E0E0;
+}
+
+.progress-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+}
+
+.progress-ring-circle {
+  fill: none;
+  stroke: #E0E0E0;
+  stroke-width: 8;
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke: #4CAF50;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* ==================== Streak Display ==================== */
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.streak-icon {
+  font-size: 2rem;
+}
+
+.streak-count {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.streak-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ==================== Plan Card ==================== */
+
+.plan-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #4CAF50;
+}
+
+.plan-card.active {
+  border-left-color: #4CAF50;
+}
+
+.plan-card.paused {
+  border-left-color: #FF9800;
+}
+
+.plan-card.completed {
+  border-left-color: #2196F3;
+}
+
+.plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.plan-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.plan-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.plan-stat {
+  text-align: center;
+  padding: 0.75rem;
+  background: #F5F5F5;
+  border-radius: 8px;
+}
+
+.plan-stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.plan-stat-label {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+/* ==================== Revision Session ==================== */
+
+.revision-session {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.revision-ayah {
+  font-family: 'Uthmani', 'Amiri', serif;
+  font-size: 2rem;
+  color: #D4AF37;
+  margin: 2rem 0;
+  direction: rtl;
+  line-height: 2;
+}
+
+.revision-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.quality-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.quality-btn.again {
+  background: #f44336;
+  color: white;
+}
+
+.quality-btn.hard {
+  background: #FF9800;
+  color: white;
+}
+
+.quality-btn.good {
+  background: #4CAF50;
+  color: white;
+}
+
+.quality-btn.easy {
+  background: #2196F3;
+  color: white;
+}
+
+.quality-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ==================== Achievements ==================== */
+
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.achievement-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.achievement-card.locked {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.achievement-card.unlocked {
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.achievement-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+.achievement-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.achievement-points {
+  font-size: 0.75rem;
+  color: #D4AF37;
+}
+
+/* ==================== Calendar View ==================== */
+
+.activity-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: #E0E0E0;
+}
+
+.calendar-day.level-1 { background: #c6e48b; }
+.calendar-day.level-2 { background: #7bc96f; }
+.calendar-day.level-3 { background: #239a3b; }
+.calendar-day.level-4 { background: #196127; }
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 768px) {
+  .memorization-dashboard {
+    grid-template-columns: 1fr;
+  }
+  
+  .plan-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .revision-ayah {
+    font-size: 1.5rem;
+  }
+  
+  .achievement-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

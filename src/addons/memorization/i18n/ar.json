@@ -1,0 +1,50 @@
+{
+  "module": {
+    "name": "الحفظ والمراجعة",
+    "description": "وحدة حفظ القرآن والمراجعة"
+  },
+  "plan": {
+    "title": "خطة الحفظ",
+    "create": "إنشاء خطة جديدة",
+    "edit": "تعديل الخطة",
+    "delete": "حذف الخطة",
+    "daily": "يومية",
+    "weekly": "أسبوعية",
+    "custom": "مخصصة",
+    "newAyahs": "آيات جديدة يومياً",
+    "revisionAyahs": "آيات للمراجعة"
+  },
+  "progress": {
+    "title": "التقدم",
+    "memorized": "محفوظ",
+    "reviewing": "تحت المراجعة",
+    "learning": "قيد التعلم",
+    "totalAyahs": "إجمالي الآيات",
+    "streak": "الأيام المتتالية"
+  },
+  "revision": {
+    "title": "المراجعة",
+    "today": "مراجعة اليوم",
+    "due": "مستحقة",
+    "completed": "مكتملة",
+    "remaining": "متبقية"
+  },
+  "achievement": {
+    "title": "الإنجازات",
+    "unlocked": "تم فتح",
+    "points": "نقطة",
+    "level": "المستوى"
+  },
+  "method": {
+    "sm2": "خوارزمية SM-2",
+    "spaced": "التكرار المتباعد",
+    "description": "طريقة مثلى للحفظ والمراجعة"
+  },
+  "common": {
+    "start": "ابدأ",
+    "pause": "إيقاف مؤقت",
+    "resume": "استئناف",
+    "complete": "إكمال",
+    "cancel": "إلغاء"
+  }
+}

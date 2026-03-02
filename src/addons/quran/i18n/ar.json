@@ -1,0 +1,103 @@
+{
+  "module": {
+    "name": "القرآن الكريم",
+    "description": "وحدة القرآن الكريم - قراءة وتجويد وتفسير"
+  },
+  "menu": {
+    "quran": "القرآن",
+    "surahs": "السور",
+    "mushaf": "المصحف",
+    "reciters": "القراء",
+    "tafsir": "التفسير",
+    "translations": "الترجمات",
+    "bookmarks": "الإشارات المرجعية",
+    "search": "البحث",
+    "settings": "الإعدادات"
+  },
+  "surah": {
+    "title": "سورة",
+    "ayahs": "آية",
+    "makki": "مكية",
+    "madani": "مدنية",
+    "revelationOrder": "ترتيب النزول",
+    "juz": "الجزء",
+    "hizb": "الحزب",
+    "page": "الصفحة"
+  },
+  "ayah": {
+    "title": "آية",
+    "number": "رقم الآية",
+    "text": "نص الآية",
+    "translation": "الترجمة",
+    "tafsir": "التفسير",
+    "wordCount": "عدد الكلمات",
+    "letterCount": "عدد الحروف"
+  },
+  "audio": {
+    "play": "تشغيل",
+    "pause": "إيقاف",
+    "stop": "توقف",
+    "next": "التالي",
+    "previous": "السابق",
+    "repeat": "تكرار",
+    "speed": "السرعة",
+    "reciter": "القارئ",
+    "selectReciter": "اختر القارئ"
+  },
+  "mushaf": {
+    "imageMode": "وضع الصور",
+    "ttfMode": "وضع الخطوط",
+    "pageNumber": "رقم الصفحة",
+    "nextPage": "الصفحة التالية",
+    "previousPage": "الصفحة السابقة",
+    "zoomIn": "تكبير",
+    "zoomOut": "تصغير"
+  },
+  "tajweed": {
+    "title": "التجويد",
+    "showTajweed": "إظهار التلوين",
+    "hideTajweed": "إخفاء التلوين",
+    "madd": "المد",
+    "ghunnah": "الغنة",
+    "idgham": "الإدغام",
+    "iqlab": "الإقلاب",
+    "ikhfa": "الإخفاء",
+    "qalqalah": "القلقلة"
+  },
+  "bookmark": {
+    "add": "إضافة إشارة",
+    "remove": "حذف الإشارة",
+    "edit": "تعديل",
+    "note": "ملاحظة",
+    "color": "اللون"
+  },
+  "search": {
+    "placeholder": "ابحث في القرآن...",
+    "results": "النتائج",
+    "noResults": "لا توجد نتائج",
+    "foundIn": "وجد في"
+  },
+  "settings": {
+    "fontSize": "حجم الخط",
+    "fontFamily": "نوع الخط",
+    "uthmani": "عثماني",
+    "indopak": "هندي",
+    "showTranslation": "إظهار الترجمة",
+    "defaultReciter": "القارئ الافتراضي",
+    "darkMode": "الوضع الداكن",
+    "language": "اللغة"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "تم بنجاح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "bismillah": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+  "sajdah": "سجدة"
+}

@@ -1,0 +1,213 @@
+/**
+ * Islamic Ornaments Styles
+ * =========================
+ * Decorative elements for Quran UI
+ */
+
+/* ==================== Verse Frame ==================== */
+
+.verse-frame {
+  position: relative;
+  padding: 2rem;
+  margin: 1rem 0;
+}
+
+.verse-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: url('/images/ornaments/frame-top.svg') center/contain repeat-x;
+}
+
+.verse-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: url('/images/ornaments/frame-bottom.svg') center/contain repeat-x;
+}
+
+/* ==================== Surah Header Ornament ==================== */
+
+.surah-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.surah-ornament::before,
+.surah-ornament::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%);
+}
+
+.surah-ornament::before {
+  margin-left: 1rem;
+}
+
+.surah-ornament::after {
+  margin-right: 1rem;
+}
+
+.surah-ornament-content {
+  padding: 0 2rem;
+  text-align: center;
+}
+
+/* ==================== Bismillah Ornament ==================== */
+
+.bismillah-ornament {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.bismillah-ornament-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.bismillah-ornament-text {
+  font-family: 'Uthmani', 'Amiri', serif;
+  font-size: 1.8rem;
+  color: #D4AF37;
+}
+
+/* ==================== Page Corners ==================== */
+
+.page-corners {
+  position: relative;
+}
+
+.page-corner {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  opacity: 0.6;
+}
+
+.page-corner.top-left {
+  top: 0;
+  left: 0;
+}
+
+.page-corner.top-right {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.page-corner.bottom-left {
+  bottom: 0;
+  left: 0;
+  transform: scaleY(-1);
+}
+
+.page-corner.bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: scale(-1);
+}
+
+/* ==================== Divider ==================== */
+
+.islamic-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.islamic-divider::before,
+.islamic-divider::after {
+  content: '';
+  flex: 1;
+  max-width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #D4AF37 100%);
+}
+
+.islamic-divider::after {
+  background: linear-gradient(90deg, #D4AF37 0%, transparent 100%);
+}
+
+.islamic-divider-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0 1rem;
+  color: #D4AF37;
+}
+
+/* ==================== Sajdah Marker ==================== */
+
+.sajdah-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(166, 91, 140, 0.2);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #A65B8C;
+}
+
+.sajdah-marker-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ==================== Juz/Hizb Markers ==================== */
+
+.juz-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #D4AF37;
+  margin: 1rem 0;
+}
+
+.hizb-marker {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: #A0A0A0;
+  border: 1px solid #3A3A4E;
+}
+
+/* ==================== Dark Mode ==================== */
+
+.dark .verse-frame::before,
+.dark .verse-frame::after {
+  filter: brightness(0.8);
+}
+
+.dark .surah-ornament::before,
+.dark .surah-ornament::after {
+  background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%);
+}
+
+.dark .islamic-divider::before {
+  background: linear-gradient(90deg, transparent 0%, #D4AF37 100%);
+}
+
+.dark .islamic-divider::after {
+  background: linear-gradient(90deg, #D4AF37 0%, transparent 100%);
+}

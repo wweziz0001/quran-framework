@@ -1,26 +1,57 @@
 {
   "name": "quran",
-  "version": "1.0.0",
+  "version": "17.0.1.0.0",
   "summary": "Quran Core Module - Complete Reader with Mushaf, Tajweed, Audio",
-  "description": "Complete Quran reading experience with Arabic text, translations, audio recitations, tajweed coloring, and multiple mushaf views (Image & TTF)",
+  "description": "Complete Quran reading experience with Arabic text, translations, audio recitations, tajweed coloring, and multiple mushaf views (Image & TTF). Following Odoo Framework methodology with full ORM integration, security rules, and modular architecture.",
   "author": "Quran Platform Team",
   "license": "LGPL-3",
   "category": "Quran",
+  "website": "https://github.com/wweziz0001/quran-framework",
   "depends": ["base"],
+  
   "data": [
     "security/quran_security.json",
     "security/quran_acl.json",
-    "views/quran_views.json"
+    "data/quran_surah_data.ts",
+    "data/quran_reciters_data.ts",
+    "data/quran_tafsir_sources_data.ts",
+    "data/quran_mushaf_editions_data.ts",
+    "data/quran_tajweed_rules_data.ts",
+    "data/quran_translation_sources_data.ts",
+    "views/quran_views.json",
+    "views/quran_menu_views.json",
+    "views/quran_surah_views.json"
   ],
+  
   "demo": [
-    "data/demo_quran.json"
+    "demo/demo_ayahs.ts",
+    "demo/demo_tafsir.ts",
+    "demo/demo_translation.ts",
+    "demo/demo_user_data.ts"
   ],
+  
   "assets": {
     "web.assets_frontend": [
+      "quran/static/css/quran_reader.css",
+      "quran/static/css/islamic-ornaments.css",
+      "quran/static/js/quran_reader.js"
+    ],
+    "web.assets_backend": [
       "quran/static/css/quran_reader.css",
       "quran/static/css/islamic-ornaments.css"
     ]
   },
+  
+  "i18n": [
+    "i18n/ar.json",
+    "i18n/en.json"
+  ],
+  
+  "external_dependencies": {
+    "python": [],
+    "bin": []
+  },
+  
   "features": [
     "mushaf_image_viewer",
     "mushaf_ttf_viewer", 
@@ -29,9 +60,58 @@
     "tafsir_panel",
     "surah_navigation",
     "verse_selection",
-    "dark_mode"
+    "dark_mode",
+    "multi_translation",
+    "semantic_search",
+    "bookmarks",
+    "reading_history",
+    "memorization_tracking"
   ],
+  
+  "controllers": [
+    "controllers/quran_controller.ts",
+    "controllers/mushaf_controller.ts",
+    "controllers/audio_controller.ts",
+    "controllers/tafsir_controller.ts"
+  ],
+  
+  "models": [
+    "models/quran_surah.ts",
+    "models/quran_ayah.ts"
+  ],
+  
+  "views_components": [
+    "views/mushaf-viewer.tsx",
+    "views/TtfMushafViewer.tsx",
+    "views/TajweedText.tsx",
+    "views/audio-player-bar.tsx",
+    "views/tafsir-panel.tsx",
+    "views/surah-list.tsx",
+    "views/islamic-ornaments.tsx",
+    "views/semantic-search.tsx"
+  ],
+  
+  "stores": [
+    "stores/quran-store.ts"
+  ],
+  
   "installable": true,
   "application": true,
-  "autoInstall": false
+  "autoInstall": false,
+  
+  " Odoo_compatibility": {
+    "version": "17.0+",
+    "patterns": [
+      "ORM BaseModel with Active Record",
+      "Model Registry",
+      "Decorator-based API (@api.depends, @api.constrains)",
+      "Security Groups with hierarchy",
+      "Access Control Lists (ACL)",
+      "Module manifest with dependencies",
+      "Data files for initialization",
+      "Demo data for testing",
+      "Static assets bundling",
+      "i18n translations"
+    ]
+  }
 }

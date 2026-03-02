@@ -1,0 +1,31 @@
+{
+  "groups": [
+    {
+      "id": "group_memorization_user",
+      "name": "Memorization User",
+      "category_id": "module_category_quran",
+      "comment": "Basic user - can create and manage own memorization plans"
+    },
+    {
+      "id": "group_memorization_student",
+      "name": "Memorization Student",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_memorization_user"],
+      "comment": "Can track progress and receive reminders"
+    },
+    {
+      "id": "group_memorization_teacher",
+      "name": "Memorization Teacher",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_memorization_student"],
+      "comment": "Can view students' progress and provide feedback"
+    },
+    {
+      "id": "group_memorization_manager",
+      "name": "Memorization Manager",
+      "category_id": "module_category_quran",
+      "implied_ids": ["group_memorization_teacher"],
+      "comment": "Full access to memorization management"
+    }
+  ]
+}
