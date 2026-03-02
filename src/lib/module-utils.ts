@@ -17,14 +17,14 @@ export interface ModuleStatus {
  */
 export async function checkModuleInstalled(moduleName: string): Promise<ModuleStatus> {
   try {
-    const module = await db.installedModule.findUnique({
+    const moduleRecord = await db.installedModule.findUnique({
       where: { name: moduleName }
     });
 
     return {
       name: moduleName,
-      installed: module?.installed ?? false,
-      version: module?.version
+      installed: moduleRecord?.installed ?? false,
+      version: moduleRecord?.version
     };
   } catch (error) {
     console.error('Failed to check module:', error);

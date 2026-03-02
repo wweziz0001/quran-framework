@@ -1,61 +1,28 @@
-# دليل التطوير | Development Guide
+# دليل التطوير والمساهمة | Development & Contribution Guide
 
-## 🚀 البدء السريع
+## 📋 نظرة عامة | Overview
 
-### المتطلبات
-- Node.js 18+
-- Bun
-- Git
-
-### التثبيت
-```bash
-bun install
-bun run db:push
-bun run seed
-bun run dev
-```
+هذا الدليل يشرح منهجية التوثيق وإدارة الإصدارات في مشروع **Quran Framework**. عند العمل على هذا المشروع، يجب اتباع هذه التعليمات بدقة لضمان الاتساق والجودة.
 
 ---
 
-## 📁 هيكل المشروع
+## 🔄 منهجية التوثيق | Documentation Methodology
+
+### ترقيم الإصدارات | Version Numbering
+
+نستخدم نظام **Semantic Versioning** (الإصدارات الدلالية):
 
 ```
-quran-framework/
-├── VERSION                    # الإصدار الحالي
-├── changelog/
-│   ├── CHANGELOG.md          # سجل كل الإصدارات
-│   └── v1.0.0.md             # تفاصيل الإصدار
-├── DEVELOPMENT_GUIDE.md       # هذا الملف
-├── src/
-│   ├── app/                  # Next.js App Router
-│   ├── core/                 # Framework Core
-│   │   ├── orm/             # ORM Layer (Odoo-style)
-│   │   ├── security/        # Security (ACL + Groups)
-│   │   ├── workflow/        # Workflow Engine
-│   │   ├── automation/      # Automation Rules
-│   │   ├── module/          # Module Loader
-│   │   └── registry/        # Model Registry
-│   ├── addons/              # Applications/Modules
-│   └── components/          # UI Components
-└── prisma/
-    └── schema.prisma        # Database Schema
+MAJOR.MINOR.PATCH (مثال: 1.2.6)
 ```
 
----
+| النوع | الرمز | متى يُستخدم | مثال |
+|-------|-------|-------------|------|
+| **MAJOR** | X.0.0 | تغييرات جذرية أو إعادة بناء كاملة | 1.0.0 → 2.0.0 |
+| **MINOR** | 1.X.0 | إضافة ميزات جديدة | 1.2.0 → 1.3.0 |
+| **PATCH** | 1.1.X | إصلاح أخطاء ومشاكل | 1.2.5 → 1.2.6 |
 
-## 🔢 ترقيم الإصدارات
-
-نستخدم **Semantic Versioning**: `MAJOR.MINOR.PATCH`
-
-| النوع | متى يُستخدم | مثال |
-|-------|-------------|------|
-| MAJOR | تغييرات جذرية | 1.0.0 → 2.0.0 |
-| MINOR | ميزات جديدة | 1.2.0 → 1.3.0 |
-| PATCH | إصلاح أخطاء | 1.2.5 → 1.2.6 |
-
----
-
-## 📝 الرموز المستخدمة
+### الرموز المستخدمة | Symbols Used
 
 | الرمز | المعنى |
 |-------|--------|
@@ -69,80 +36,175 @@ quran-framework/
 
 ---
 
-## 🚀 خطوات إصدار تحديث جديد
+## 📁 هيكل ملفات التوثيق | Documentation Files Structure
 
-### عند إصلاح مشكلة (Patch)
+```
+project/
+├── VERSION                    # الإصدار الحالي (رقم واحد فقط)
+├── changelog/
+│   ├── CHANGELOG.md          # سجل كل الإصدارات
+│   └── v1.0.0.md             # تفاصيل الإصدار المحدد
+└── DEVELOPMENT_GUIDE.md       # هذا الملف
+```
+
+---
+
+## 🚀 خطوات إصدار تحديث جديد | Steps for New Release
+
+### عند إصلاح مشكلة (Patch) | When Fixing a Bug
 
 ```bash
 # 1. قراءة الإصدار الحالي
-cat VERSION  # مثال: 1.2.5
+cat VERSION
+# مثال: 1.2.5
 
-# 2. تحديث VERSION
+# 2. تحديث VERSION إلى 1.2.6
 echo "1.2.6" > VERSION
 
-# 3. إنشاء ملف التغييرات
+# 3. إنشاء ملف التغييرات التفصيلية
 # إنشاء changelog/v1.2.6.md
-
-# 4. تحديث CHANGELOG.md
-
-# 5. إنشاء فرع ورفع
-git checkout -b v1.2.6
-git add .
-git commit -m "Release v1.2.6: وصف الإصلاح"
-git push origin v1.2.6
 ```
 
-### عند إضافة ميزة (Minor)
+### محتوى ملف changelog/vX.X.X.md:
+
+```markdown
+# [1.2.6] - YYYY-MM-DD
+
+## 🔧 الإصلاحات
+
+### عنوان الإصلاح
+
+**المشكلة:**
+وصف واضح للمشكلة التي كانت موجودة.
+
+**السبب:**
+شرح السبب الجذري للمشكلة.
+
+**الحل:**
+وصف الحل المطبق.
+
+**الملفات المتأثرة:**
+- `path/to/file1.ts` - وصف التغيير
+- `path/to/file2.tsx` - وصف التغيير
+
+**التفاصيل:**
+```diff
+- الكود القديم
++ الكود الجديد
+```
+
+**النتيجة:**
+✅ نتائج الإصلاح
+```
+
+---
+
+### عند إضافة ميزة (Minor) | When Adding a Feature
 
 ```bash
+# 1. تحديث VERSION من 1.2.6 إلى 1.3.0
 echo "1.3.0" > VERSION
-# إنشاء changelog/v1.3.0.md
-```
 
-### عند تغيير جذري (Major)
-
-```bash
-echo "2.0.0" > VERSION
-# إنشاء changelog/v2.0.0.md
+# 2. إنشاء changelog/v1.3.0.md
 ```
 
 ---
 
-## 📤 الرفع إلى GitHub
+### عند تغيير جذري (Major) | When Major Change
 
 ```bash
-# إنشاء فرع جديد
+# 1. تحديث VERSION من 1.3.0 إلى 2.0.0
+echo "2.0.0" > VERSION
+
+# 2. إنشاء changelog/v2.0.0.md مع توثيق شامل
+```
+
+---
+
+## 📤 الرفع إلى GitHub | Push to GitHub
+
+### الخطوات المطلوبة | Required Steps
+
+بعد إكمال أي تغيير، يجب تنفيذ الخطوات التالية:
+
+```bash
+# 1. التحقق من الملفات المتغيرة
+git status
+
+# 2. إنشاء فرع جديد باسم الإصدار
 git checkout -b v1.2.6
 
-# إضافة الملفات
+# 3. إضافة جميع الملفات
 git add .
 
-# إنشاء commit
-git commit -m "Release v1.2.6: وصف التغيير"
+# 4. إنشاء commit مع رسالة واضحة
+git commit -m "Release v1.2.6: إصلاح عدم عمل واجهة مدير قواعد البيانات"
 
-# رفع الفرع
+# 5. رفع الفرع إلى GitHub
 git push origin v1.2.6
 ```
 
----
+### إذا كان التوكن مطلوباً | If Token is Required
 
-## ⚠️ قواعد مهمة
-
-### ✅ يجب فعله
-- توثيق دقيق لكل تغيير
-- فرع منفصل لكل إصدار
-- رسائل commit واضحة
-- تحديث VERSION و CHANGELOG
-
-### ❌ لا يجب فعله
-- لا تعمل commit مباشر على main
-- لا تتخطى التوثيق
-- لا تحذف ملفات changelog
-- لا تغير VERSION بدون سبب
+```bash
+# استخدام التوكن في الرابط
+git push https://<TOKEN>@github.com/wweziz0001/quran-framework.git v1.2.6
+```
 
 ---
 
-## ✅ قائمة التحقق قبل الإصدار
+## 📝 تحديث CHANGELOG.md | Update Main Changelog
+
+بعد إنشاء ملف الإصدار، يجب تحديث الملف الرئيسي:
+
+```markdown
+## [1.2.6] - 2026-02-28
+
+### 🔧 الإصلاحات
+
+#### إصلاح عدم عمل واجهة مدير قواعد البيانات (DB Manager)
+
+**المشكلة:**
+جميع تبويبات واجهة مدير قواعد البيانات لم تكن تعمل...
+
+**الملفات المتأثرة:**
+- `.env` (جديد)
+- `src/app/api/admin/db/tables/route.ts`
+- ...
+
+**التفاصيل:** انظر `changelog/v1.2.6.md`
+
+---
+```
+
+---
+
+## ⚠️ قواعد مهمة | Important Rules
+
+### ✅ يجب فعله | Must Do
+
+| القاعدة | الوصف |
+|---------|-------|
+| 📝 توثيق دقيق | كل تغيير يجب أن يكون موثقاً بشكل واضح |
+| 🌿 فرع منفصل | كل إصدار له فرع خاص به |
+| 💬 رسائل Commit واضحة | استخدام تنسيق موحد |
+| 🔢 تحديث VERSION | دائماً تحديث رقم الإصدار |
+| 📋 تحديث CHANGELOG.md | إضافة ملخص للتغييرات |
+
+### ❌ لا يجب فعله | Must Not Do
+
+| القاعدة | الوصف |
+|---------|-------|
+| 🚫 لا تعمل commit مباشر على main | دائماً أنشئ فرع |
+| 🚫 لا تتخطى التوثيق | حتى التغييرات الصغيرة تحتاج توثيق |
+| 🚫 لا تحذف ملفات changelog | جميع ملفات الإصدارات محفوظة |
+| 🚫 لا تغير VERSION بدون سبب | كل تغيير له معنى |
+
+---
+
+## 🔍 التحقق من جودة التوثيق | Documentation Quality Check
+
+قبل إكمال أي إصدار، تأكد من:
 
 - [ ] تم تحديث ملف VERSION
 - [ ] تم إنشاء ملف changelog/vX.X.X.md
@@ -153,93 +215,59 @@ git push origin v1.2.6
 
 ---
 
-## 🏗️ بنية Framework
+## 🏗️ هيكل المشروع | Project Structure
 
-### ORM (Odoo-style)
-
-```typescript
-// تعريف نموذج
-class SurahModel extends BaseModel {
-  static _name = 'quran.surah';
-  static _fields = {
-    name: new fields.Char({ required: true }),
-    number: new fields.Integer({ required: true }),
-    ayahs: new fields.One2Many({ model: 'quran.ayah', field: 'surah_id' }),
-  };
-
-  @api.depends('ayahs')
-  async computeAyahCount() {
-    return this.get('ayahs')?.length || 0;
-  }
-}
-
-// استخدام
-const surahs = await SurahModel.search([['revelation_type', '=', 'makki']]);
-const surah = await SurahModel.browse(1);
-await surah.write({ name: 'Updated' });
 ```
-
-### Security
-
-```typescript
-// ACL
-{
-  "model": "quran.surah",
-  "permissions": {
-    "read": ["base.group_user"],
-    "write": ["base.group_manager"],
-    "create": ["base.group_manager"],
-    "unlink": ["base.group_admin"]
-  }
-}
-
-// Record Rules
-{
-  "model": "quran.memorization",
-  "domain": "[('user_id', '=', user.id)]",
-  "groups": ["base.group_user"]
-}
-```
-
-### Workflow
-
-```typescript
-const workflow = {
-  states: ['draft', 'active', 'paused', 'completed'],
-  transitions: [
-    { from: 'draft', to: 'active', action: 'start' },
-    { from: 'active', to: 'paused', action: 'pause' },
-    { from: 'paused', to: 'active', action: 'resume' },
-    { from: 'active', to: 'completed', action: 'complete' },
-  ]
-};
+src/
+├── addons/                    # الوحدات (Modules) - Odoo Style
+│   ├── quran/                # وحدة القرآن
+│   │   ├── __manifest__.json # بيانان الوحدة
+│   │   ├── controllers/      # المتحكمات
+│   │   ├── models/           # النماذج
+│   │   ├── views/            # الواجهات
+│   │   ├── stores/           # حالة التطبيق
+│   │   ├── security/         # الأمان
+│   │   ├── data/             # البيانات الأولية
+│   │   ├── demo/             # بيانات تجريبية
+│   │   ├── i18n/             # الترجمات
+│   │   └── static/           # الأصول الثابتة
+│   └── memorization/         # وحدة الحفظ
+├── app/                       # Next.js App Router
+│   ├── page.tsx              # متجر التطبيقات
+│   ├── quran/                # قارئ القرآن
+│   ├── admin/                # لوحة التحكم
+│   └── api/                  # API Routes
+├── lib/                       # المكتبات
+│   ├── apps-registry.ts      # سجل التطبيقات
+│   ├── module-utils.ts       # أدوات الوحدات
+│   └── db.ts                 # قاعدة البيانات
+├── components/               # المكونات المشتركة
+│   └── ui/                   # shadcn/ui components
+└── types/                    # TypeScript types
 ```
 
 ---
 
-## 📦 التطبيقات المتاحة
+## 🛠️ التقنيات المستخدمة | Technologies Used
 
-| ID | الاسم | التصنيف | مثبت |
-|----|-------|---------|------|
-| quran | قارئ القرآن | Quran | ✅ |
-| quran_audio | استماع القرآن | Quran | ❌ |
-| quran_tafsir | تفسير القرآن | Quran | ❌ |
-| memorization | الحفظ | Learning | ❌ |
-| quran_analytics | الإحصائيات | Analytics | ❌ |
-| prayer_times | أوقات الصلاة | Islamic | ❌ |
-| users | إدارة المستخدمين | Administration | ✅ |
-| settings | الإعدادات | Administration | ✅ |
-
----
-
-## 🔗 روابط مفيدة
-
-- [Odoo ORM Documentation](https://www.odoo.com/documentation/16.0/developer/reference/orm.html)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
-- [shadcn/ui Components](https://ui.shadcn.com)
+| التقنية | الإصدار | الاستخدام |
+|---------|---------|-----------|
+| Next.js | 16.1.1 | إطار العمل |
+| React | 19.0.0 | مكتبة الواجهات |
+| TypeScript | 5.x | لغة البرمجة |
+| Prisma | 6.11.1 | ORM |
+| SQLite | - | قاعدة البيانات |
+| Tailwind CSS | 4.x | التصميم |
+| shadcn/ui | - | مكونات UI |
+| Zustand | 5.0.11 | إدارة الحالة |
 
 ---
 
-**آخر تحديث:** 2025-01-19
-**الإصدار:** 1.0.0
+## 📞 التواصل | Contact
+
+للمساهمة أو الاستفسارات:
+- GitHub: [wweziz0001/quran-framework](https://github.com/wweziz0001/quran-framework)
+
+---
+
+**آخر تحديث:** 2025-01-18 | **الإصدار:** 1.0.0

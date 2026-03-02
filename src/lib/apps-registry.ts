@@ -201,6 +201,26 @@ export const appsRegistry: AppManifest[] = [
     autoInstall: true,
     application: false,
   },
+  {
+    id: 'web_admin',
+    name: 'Admin Dashboard',
+    nameAr: 'لوحة التحكم',
+    version: '17.0.1.0.0',
+    summary: 'Administrative control panel',
+    summaryAr: 'لوحة تحكم إدارية للنظام',
+    description: 'Complete admin dashboard for managing Quran data, users, reciters, tafsir sources, and system settings with CRUD operations.',
+    descriptionAr: 'لوحة تحكم كاملة لإدارة بيانات القرآن والمستخدمين والقراء ومصادر التفسير وإعدادات النظام مع عمليات CRUD.',
+    author: 'Quran Framework Team',
+    website: 'https://quran-framework.example.com',
+    category: 'Administration',
+    icon: 'LayoutDashboard',
+    color: '#3b82f6',
+    depends: ['base'],
+    installed: false,
+    installable: true,
+    autoInstall: false,
+    application: true,
+  },
 ];
 
 export function getInstalledApps(): AppManifest[] {

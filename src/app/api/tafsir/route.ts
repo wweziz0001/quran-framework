@@ -7,7 +7,7 @@ export async function GET() {
     const sources = await db.quranTafsirSource.findMany({
       include: {
         _count: {
-          select: { TafsirEntry: true }
+          select: { entries: true }
         }
       },
       orderBy: { nameArabic: 'asc' }

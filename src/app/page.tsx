@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import {
   Settings, BookOpen, Headphones, BookMarked, Target, BarChart3, Compass,
   Users, Search, ChevronRight, Check, Download, Play, Star, Clock,
-  Grid, List, Filter, RefreshCw, X, Home, Menu, Book, Heart
+  Grid, List, Filter, RefreshCw, X, Home, Menu, Book, Heart, LayoutDashboard
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,6 +33,7 @@ const iconMap: Record<string, React.ElementType> = {
   Users,
   Book,
   Heart,
+  LayoutDashboard,
 };
 
 // App Card Component
@@ -287,27 +288,27 @@ export default function AppsStore() {
 
   // Load modules from API on mount
   useEffect(() => {
+    async function loadModules() {
+      try {
+        const response = await fetch('/api/modules');
+        const data = await response.json();
+        
+        if (data.success) {
+          // Update appsRegistry with installation status from database
+          data.data.forEach((mod: { name: string; installed: boolean }) => {
+            const app = appsRegistry.find(a => a.id === mod.name);
+            if (app) {
+              app.installed = mod.installed;
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load modules:', error);
+      }
+    }
+    
     loadModules();
   }, []);
-
-  const loadModules = async () => {
-    try {
-      const response = await fetch('/api/modules');
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update appsRegistry with installation status from database
-        data.data.forEach((mod: any) => {
-          const app = appsRegistry.find(a => a.id === mod.name);
-          if (app) {
-            app.installed = mod.installed;
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load modules:', error);
-    }
-  };
 
   // Handlers
   const handleInstall = async (appId: string) => {

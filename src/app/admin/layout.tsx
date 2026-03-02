@@ -12,9 +12,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { 
   LayoutDashboard, Database, Code, Shield, Settings, 
-  BookOpen, Headphones, Cloud, FolderOpen,
-  Menu, Moon, Sun, Search, Users, Import,
-  BookMarked, AlertCircle, Download, ArrowRight
+  BookOpen, Headphones, Cloud,
+  Menu, Moon, Sun, Search, Users,
+  BookMarked, AlertCircle, Download, ArrowRight, Loader2
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -65,29 +65,39 @@ export default function AdminLayout({
 
   // Check module installation on mount
   useEffect(() => {
-    checkModuleInstallation();
-  }, []);
-
-  const checkModuleInstallation = async () => {
-    try {
-      const response = await fetch('/api/modules/check/web_admin');
-      const data = await response.json();
-      
-      setModuleStatus({
-        checked: true,
-        installed: data.success && data.data?.installed,
-        installing: false,
-        error: null
-      });
-    } catch (error) {
-      setModuleStatus({
-        checked: true,
-        installed: false,
-        installing: false,
-        error: 'فشل في التحقق من حالة الوحدة'
-      });
+    let isMounted = true;
+    
+    async function checkInstallation() {
+      try {
+        const response = await fetch('/api/modules/check/web_admin');
+        const data = await response.json();
+        
+        if (isMounted) {
+          setModuleStatus({
+            checked: true,
+            installed: data.success && data.data?.installed,
+            installing: false,
+            error: null
+          });
+        }
+      } catch {
+        if (isMounted) {
+          setModuleStatus({
+            checked: true,
+            installed: false,
+            installing: false,
+            error: 'فشل في التحقق من حالة الوحدة'
+          });
+        }
+      }
     }
-  };
+    
+    checkInstallation();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleInstall = async () => {
     setModuleStatus(prev => ({ ...prev, installing: true, error: null }));
@@ -111,7 +121,7 @@ export default function AdminLayout({
           error: data.error || 'فشل في التثبيت'
         }));
       }
-    } catch (error) {
+    } catch {
       setModuleStatus(prev => ({
         ...prev,
         installing: false,
@@ -146,8 +156,8 @@ export default function AdminLayout({
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/20 flex items-center justify-center mb-4">
-              <AlertCircle className="w-8 h-8 text-amber-600" />
+            <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center mb-4">
+              <AlertCircle className="w-8 h-8 text-blue-600" />
             </div>
             <CardTitle className="text-xl">
               لوحة التحكم غير مثبتة
@@ -178,7 +188,7 @@ export default function AdminLayout({
               >
                 {moduleStatus.installing ? (
                   <>
-                    <Download className="w-4 h-4 mr-2 animate-bounce" />
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     جاري التثبيت...
                   </>
                 ) : (

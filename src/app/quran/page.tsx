@@ -62,29 +62,39 @@ export default function QuranApp() {
 
   // Check module installation on mount (Odoo-style)
   useEffect(() => {
-    checkModuleInstallation();
-  }, []);
-
-  const checkModuleInstallation = async () => {
-    try {
-      const response = await fetch('/api/modules/check/quran');
-      const data = await response.json();
-      
-      setModuleStatus({
-        checked: true,
-        installed: data.success && data.data?.installed,
-        installing: false,
-        error: null
-      });
-    } catch (error) {
-      setModuleStatus({
-        checked: true,
-        installed: false,
-        installing: false,
-        error: 'فشل في التحقق من حالة الوحدة'
-      });
+    let isMounted = true;
+    
+    async function checkInstallation() {
+      try {
+        const response = await fetch('/api/modules/check/quran');
+        const data = await response.json();
+        
+        if (isMounted) {
+          setModuleStatus({
+            checked: true,
+            installed: data.success && data.data?.installed,
+            installing: false,
+            error: null
+          });
+        }
+      } catch {
+        if (isMounted) {
+          setModuleStatus({
+            checked: true,
+            installed: false,
+            installing: false,
+            error: 'فشل في التحقق من حالة الوحدة'
+          });
+        }
+      }
     }
-  };
+    
+    checkInstallation();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleInstall = async () => {
     setModuleStatus(prev => ({ ...prev, installing: true, error: null }));
