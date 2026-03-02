@@ -1,164 +1,125 @@
-# Changelog - Quran Framework
+# سجل التغييرات | Changelog
 
-جميع التغييرات الملحوظة في هذا المشروع موثقة في هذا الملف.
-
-التنسيق مبني على [Keep a Changelog](https://keepachangelog.com/ar/1.0.0/)،
-والإصدارات تتبع [Semantic Versioning](https://semver.org/lang/ar/).
+جميع التغييرات الجوهرية في هذا المشروع سيتم توثيقها في هذا الملف.
 
 ---
 
-## [1.0.0] - 2025-01-19
+## [1.0.0] - 2025-01-18
 
 ### ✨ الميزات الجديدة
 
-#### نظام Apps Store (متجر التطبيقات)
-واجهة متجر تطبيقات مستوحاة من Odoo مع إمكانية تثبيت وإدارة التطبيقات.
+#### نظام إدارة الوحدات (Module Installation System)
+
+**الوصف:**
+نظام كامل لإدارة تثبيت الوحدات وفق منهجية Odoo Framework.
 
 **الملفات المتأثرة:**
-- `src/lib/apps-registry.ts` (جديد) - سجل التطبيقات
-- `src/app/page.tsx` (جديد) - واجهة المتجر
+- `prisma/schema.prisma` - إضافة جدول InstalledModule
+- `src/app/api/modules/route.ts` - عرض الوحدات المثبتة
+- `src/app/api/modules/install/route.ts` - تثبيت وحدة جديدة
+- `src/app/api/modules/uninstall/route.ts` - إلغاء تثبيت وحدة
+- `src/app/api/modules/check/[name]/route.ts` - التحقق من تثبيت وحدة
 
-**التفاصيل:**
-```diff
-+ إنشاء واجهة Apps Store مع 9 تطبيقات
-+ نظام تثبيت/إلغاء تثبيت
-+ فلترة حسب التصنيف والبحث
-+ عرض Grid/List للتطبيقات
-```
-
-**النتيجة:**
-✅ واجهة متجر تشبه Odoo
-
-#### تطبيق قارئ القرآن
-تطبيق كامل لقراءة وتصفح القرآن الكريم.
-
-**الملفات المتأثرة:**
-- `src/app/api/surahs/route.ts` (جديد)
-- `src/app/api/surahs/[id]/route.ts` (جديد)
-- `src/app/api/ayahs/route.ts` (جديد)
-- `src/app/api/stats/route.ts` (جديد)
-- `src/app/api/search/route.ts` (جديد)
-- `src/app/api/translations/route.ts` (جديد)
-- `src/app/api/reciters/route.ts` (جديد)
-
-**التفاصيل:**
-```diff
-+ 114 سورة مع بياناتها الكاملة
-+ 7 آيات لسورة الفاتحة كنموذج
-+ API endpoints للسور والآيات والبحث
-```
-
-**النتيجة:**
-✅ قارئ قرآن متكامل مع خط Amiri
-
-#### نظام ORM (Odoo-style)
-نظام ORM مستوحى من Odoo مع Prisma.
-
-**الملفات المتأثرة:**
-- `src/core/orm/base.ts` (جديد) - BaseModel
-- `src/core/orm/fields.ts` (جديد) - أنواع الحقول
-- `src/core/orm/decorators.ts` (جديد) - الديكوريتورز
-
-**التفاصيل:**
-```diff
-+ BaseModel مع CRUD operations
-+ Field types: Char, Integer, Boolean, Selection, Many2One, One2Many
-+ Decorators: @api.depends, @api.constrains, @api.onchange
-```
-
-**النتيجة:**
-✅ ORM يشبه Odoo
-
-#### نظام الأمان (Security Layer)
-نظام ACL وRecord Rules.
-
-**الملفات المتأثرة:**
-- `src/core/security/acl.ts` (جديد)
-- `src/core/security/groups.ts` (جديد)
-
-**النتيجة:**
-✅ نظام أمان للمجموعات والصلاحيات
-
-#### نظام الوحدات (Module System)
-نظام Addons مستوحى من Odoo.
-
-**الملفات المتأثرة:**
-- `src/core/module/loader.ts` (جديد)
-- `src/core/registry/index.ts` (جديد)
-- `src/addons/base/__manifest__.json` (جديد)
-- `src/addons/quran/__manifest__.json` (جديد)
-- `src/addons/memorization/__manifest__.json` (جديد)
-
-**النتيجة:**
-✅ نظام وحدات قابل للتوسع
-
-#### Workflow Engine
-محرك سير العمل.
-
-**الملفات المتأثرة:**
-- `src/core/workflow/engine.ts` (جديد)
-- `src/core/workflow/index.ts` (جديد)
-
-**النتيجة:**
-✅ محرك workflows
+**التفاصيل:** انظر `changelog/v1.0.0.md`
 
 ---
 
-### 📁 هيكل المشروع
+#### متجر التطبيقات (Apps Store)
 
+**الوصف:**
+واجهة متجر تطبيقات متكاملة لعرض وتثبيت الوحدات.
+
+**الملفات المتأثرة:**
+- `src/app/page.tsx` - واجهة المتجر
+- `src/lib/apps-registry.ts` - سجل التطبيقات
+
+---
+
+#### قارئ القرآن (Quran Reader)
+
+**الوصف:**
+قارئ قرآن كامل مع عرض المصحف والتلاوات الصوتية والتفسير.
+
+**الملفات المتأثرة:**
+- `src/app/quran/page.tsx` - الصفحة الرئيسية
+- `src/addons/quran/` - وحدة القرآن الكاملة
+
+---
+
+#### لوحة التحكم (Admin Dashboard)
+
+**الوصف:**
+لوحة تحكم إدارية لإدارة بيانات القرآن والمستخدمين والإعدادات.
+
+**الملفات المتأثرة:**
+- `src/app/admin/page.tsx` - الصفحة الرئيسية
+- `src/app/admin/layout.tsx` - التخطيط العام
+- `src/components/admin/` - مكونات لوحة التحكم
+
+---
+
+### 📝 التوثيق
+
+#### منهجية Odoo Framework
+
+**الوصف:**
+تطبيق كامل لمنهجية Odoo Framework في هيكلة المشروع.
+
+**الهيكل:**
 ```
-project/
-├── VERSION                    # الإصدار الحالي
-├── changelog/
-│   ├── CHANGELOG.md          # سجل كل الإصدارات
-│   └── v1.0.0.md             # تفاصيل الإصدار
-├── src/
-│   ├── app/                  # Next.js App Router
-│   │   ├── api/             # API Routes
-│   │   ├── page.tsx         # الصفحة الرئيسية (Apps Store)
-│   │   ├── layout.tsx       # التخطيط الرئيسي
-│   │   └── globals.css      # الأنماط
-│   ├── core/                # Framework Core
-│   │   ├── orm/             # ORM Layer
-│   │   ├── security/        # Security Layer
-│   │   ├── workflow/        # Workflow Engine
-│   │   ├── automation/      # Automation Engine
-│   │   ├── module/          # Module System
-│   │   └── registry/        # Registry
-│   ├── addons/              # التطبيقات/الوحدات
-│   │   ├── base/           # الوحدة الأساسية
-│   │   ├── quran/          # قارئ القرآن
-│   │   └── memorization/    # الحفظ
-│   ├── lib/                 # المكتبات
-│   │   ├── db.ts           # Prisma Client
-│   │   └── apps-registry.ts # سجل التطبيقات
-│   └── components/          # UI Components (shadcn/ui)
-├── prisma/
-│   └── schema.prisma        # قاعدة البيانات
-└── scripts/
-    └── seed.ts              # بيانات أولية
+src/addons/quran/
+├── __manifest__.json     # بيانان الوحدة
+├── controllers/          # المتحكمات
+├── models/              # النماذج
+├── views/               # الواجهات
+├── stores/              # حالة التطبيق
+├── security/            # الأمان
+├── data/                # البيانات الأولية
+├── demo/                # بيانات تجريبية
+├── i18n/                # الترجمات
+└── static/              # الأصول الثابتة
 ```
 
 ---
 
-### 🔧 المتطلبات التقنية
+### 🔧 الإصلاحات
 
-- **Framework:** Next.js 16 with App Router
-- **Language:** TypeScript 5
-- **Database:** SQLite with Prisma ORM
-- **UI:** shadcn/ui + Tailwind CSS 4
-- **Fonts:** Amiri (Arabic), Geist (Latin)
+#### إصلاح خطأ في API التفسير
 
----
+**المشكلة:**
+كان حقل `TafsirEntry` غير صحيح في استعلام Prisma.
 
-### 📝 ملاحظات
-
-هذا الإصدار الأولي يحتوي على:
-- البنية الأساسية للـ Framework
-- واجهة Apps Store
-- تطبيق قارئ القرآن (مع سورة الفاتحة فقط كبيانات)
-- 9 تطبيقات في المتجر (3 مثبتة، 6 متاحة)
+**الحل:**
+تغيير `TafsirEntry` إلى `entries` ليتوافق مع اسم العلاقة في الـ schema.
 
 ---
 
-[1.0.0]: https://github.com/wweziz0001/quran-framework/releases/tag/v1.0.0
+## [0.2.0] - 2025-01-15
+
+### ✨ الميزات الجديدة
+
+#### الإصدار الأولي من المشروع
+
+- إعداد Next.js 16 مع TypeScript
+- إضافة Prisma مع SQLite
+- إضافة shadcn/ui components
+- إعداد Tailwind CSS 4
+
+---
+
+## أنواع التغييرات | Types of Changes
+
+| الرمز | النوع | الوصف |
+|-------|-------|-------|
+| ✨ | ميزة جديدة | إضافة وظيفة جديدة |
+| 🔧 | إصلاح | إصلاح خطأ أو مشكلة |
+| 📝 | توثيق | تحديثات التوثيق |
+| 🎨 | تصميم | تحسينات التصميم والواجهة |
+| ⚡ | أداء | تحسينات الأداء |
+| 🔒 | أمان | تحسينات الأمان |
+| ♻️ | إعادة هيكلة | تحسين الكود دون تغيير الوظيفة |
+
+---
+
+[1.0.0]: https://github.com/wweziz0001/quran-framework/tree/v1.0.0
+[0.2.0]: https://github.com/wweziz0001/quran-framework/tree/v0.2.0
