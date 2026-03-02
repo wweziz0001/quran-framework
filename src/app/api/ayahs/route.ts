@@ -1,67 +1,74 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
-// GET /api/ayahs - Get ayahs with filtering
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const surahId = searchParams.get('surah_id');
-    const juzNumber = searchParams.get('juz');
-    const pageNumber = searchParams.get('page');
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const { searchParams } = new URL(request.url);
+    const surahId = searchParams.get('surahId');
+    const surahNumber = searchParams.get('surahNumber');
+    const ayahNumber = searchParams.get('ayahNumber');
+    const limit = parseInt(searchParams.get('limit') || '100');
     const offset = parseInt(searchParams.get('offset') || '0');
-    const translationSource = searchParams.get('translation');
-
-    const where: Record<string, unknown> = { active: true };
     
+    // Get ayah by surah number and ayah number
+    if (surahNumber && ayahNumber) {
+      const ayah = await db.quranAyah.findFirst({
+        where: {
+          surah: { number: parseInt(surahNumber) },
+          ayahNumber: parseInt(ayahNumber)
+        },
+        include: {
+          surah: {
+            select: { id: true, number: true, nameArabic: true, nameEnglish: true }
+          }
+        }
+      });
+      
+      return NextResponse.json({
+        success: true,
+        data: ayah ? [ayah] : []
+      });
+    }
+    
+    // Get ayahs by surah ID
     if (surahId) {
-      where.surahId = parseInt(surahId);
+      const ayahs = await db.quranAyah.findMany({
+        where: { surahId: parseInt(surahId) },
+        orderBy: { ayahNumber: 'asc' },
+        include: {
+          surah: {
+            select: { id: true, number: true, nameArabic: true, nameEnglish: true }
+          }
+        }
+      });
+      
+      return NextResponse.json({
+        success: true,
+        data: ayahs
+      });
     }
-    if (juzNumber) {
-      where.juzNumber = parseInt(juzNumber);
-    }
-    if (pageNumber) {
-      where.pageNumber = parseInt(pageNumber);
-    }
-
-    const include: Record<string, unknown> = {
-      surah: {
-        select: { number: true, nameEnglish: true, nameArabic: true }
-      }
-    };
-
-    if (translationSource) {
-      include.translationEntries = {
-        where: { sourceId: translationSource }
-      };
-    }
-
-    const [ayahs, total] = await Promise.all([
-      db.quranAyah.findMany({
-        where,
-        orderBy: [{ surahId: 'asc' }, { ayahNumber: 'asc' }],
-        skip: offset,
-        take: limit,
-        include
-      }),
-      db.quranAyah.count({ where })
-    ]);
-
-    return NextResponse.json({
-      success: true,
-      data: ayahs,
-      meta: {
-        total,
-        limit,
-        offset,
-        hasMore: offset + limit < total
+    
+    // Get all ayahs with pagination
+    const ayahs = await db.quranAyah.findMany({
+      take: limit,
+      skip: offset,
+      orderBy: [{ surahId: 'asc' }, { ayahNumber: 'asc' }],
+      include: {
+        surah: {
+          select: { id: true, number: true, nameArabic: true, nameEnglish: true }
+        }
       }
     });
-  } catch (error) {
+    
+    return NextResponse.json({
+      success: true,
+      data: ayahs
+    });
+  } catch (error: any) {
     console.error('Error fetching ayahs:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch ayahs' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
   }
 }

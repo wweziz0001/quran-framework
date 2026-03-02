@@ -1,8 +1,8 @@
 {
   "name": "quran",
   "version": "1.0.0",
-  "summary": "Quran Core Module",
-  "description": "Core Quran module with Surah, Ayah, Translation, and Tafsir models",
+  "summary": "Quran Core Module - Complete Reader with Mushaf, Tajweed, Audio",
+  "description": "Complete Quran reading experience with Arabic text, translations, audio recitations, tajweed coloring, and multiple mushaf views (Image & TTF)",
   "author": "Quran Platform Team",
   "license": "LGPL-3",
   "category": "Quran",
@@ -10,24 +10,27 @@
   "data": [
     "security/quran_security.json",
     "security/quran_acl.json",
-    "views/quran_surah_views.json",
-    "views/quran_ayah_views.json",
-    "views/quran_translation_views.json",
-    "views/quran_tafsir_views.json",
-    "views/quran_menu_views.json"
+    "views/quran_views.json"
   ],
   "demo": [
     "data/demo_quran.json"
   ],
   "assets": {
     "web.assets_frontend": [
-      "quran/static/src/css/quran_reader.css",
-      "quran/static/src/js/quran_reader.js"
-    ],
-    "web.assets_backend": [
-      "quran/static/src/js/quran_widgets.js"
+      "quran/static/css/quran_reader.css",
+      "quran/static/css/islamic-ornaments.css"
     ]
   },
+  "features": [
+    "mushaf_image_viewer",
+    "mushaf_ttf_viewer", 
+    "tajweed_coloring",
+    "audio_playback",
+    "tafsir_panel",
+    "surah_navigation",
+    "verse_selection",
+    "dark_mode"
+  ],
   "installable": true,
   "application": true,
   "autoInstall": false

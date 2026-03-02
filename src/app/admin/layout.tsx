@@ -1,0 +1,159 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  LayoutDashboard, Database, Code, Shield, Settings, 
+  BookOpen, Headphones, Cloud, FolderOpen,
+  Menu, Moon, Sun, Search, Users, Import,
+  BookMarked
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+
+interface NavItem {
+  id: string;
+  label: string;
+  labelAr: string;
+  href: string;
+  icon: React.ReactNode;
+  badge?: string;
+}
+
+const navItems: NavItem[] = [
+  { id: 'dashboard', label: 'Dashboard', labelAr: 'لوحة التحكم', href: '/admin', icon: <LayoutDashboard className="h-4 w-4" /> },
+  { id: 'quran', label: 'Quran', labelAr: 'القرآن', href: '/admin/quran', icon: <BookOpen className="h-4 w-4" />, badge: 'CRUD' },
+  { id: 'mushafs', label: 'Mushafs', labelAr: 'المصاحف', href: '/admin/mushafs', icon: <BookMarked className="h-4 w-4" /> },
+  { id: 'reciters', label: 'Reciters', labelAr: 'القراء', href: '/admin/reciters', icon: <Headphones className="h-4 w-4" />, badge: 'CRUD' },
+  { id: 'tafsir', label: 'Tafsir', labelAr: 'التفسير', href: '/admin/tafsir', icon: <BookOpen className="h-4 w-4" />, badge: 'CRUD' },
+  { id: 'users', label: 'Users', labelAr: 'المستخدمون', href: '/admin/users', icon: <Users className="h-4 w-4" /> },
+  { id: 'import', label: 'Import Data', labelAr: 'استيراد', href: '/admin/import', icon: <Cloud className="h-4 w-4" />, badge: 'NEW' },
+  { id: 'db-manager', label: 'DB Manager', labelAr: 'مدير قاعدة البيانات', href: '/admin/db-manager', icon: <Database className="h-4 w-4" />, badge: 'NEW' },
+  { id: 'settings', label: 'Settings', labelAr: 'الإعدادات', href: '/admin/settings', icon: <Settings className="h-4 w-4" /> },
+  { id: 'security', label: 'Security', labelAr: 'الأمان', href: '/admin/security', icon: <Shield className="h-4 w-4" /> },
+];
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === '/admin') {
+      return pathname === '/admin';
+    }
+    return pathname.startsWith(href);
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex">
+      {/* Sidebar */}
+      <aside className={cn(
+        "fixed inset-y-0 right-0 z-50 flex flex-col bg-card border-r transition-all duration-300",
+        sidebarOpen ? "w-64" : "w-16"
+      )}>
+        <div className="h-16 flex items-center justify-between px-4 border-b">
+          {sidebarOpen && (
+            <Link href="/admin" className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="font-bold">لوحة التحكم</span>
+            </Link>
+          )}
+          <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
+
+        <ScrollArea className="flex-1 py-4">
+          <nav className="px-2 space-y-1">
+            {navItems.map((item) => (
+              <Link key={item.id} href={item.href}>
+                <Button
+                  variant={isActive(item.href) ? 'default' : 'ghost'}
+                  className={cn(
+                    "w-full justify-start gap-3",
+                    !sidebarOpen && "justify-center px-0"
+                  )}
+                >
+                  {item.icon}
+                  {sidebarOpen && (
+                    <>
+                      <span className="flex-1 text-right">{item.labelAr}</span>
+                      {item.badge && (
+                        <Badge variant="secondary" className="text-xs">{item.badge}</Badge>
+                      )}
+                    </>
+                  )}
+                </Button>
+              </Link>
+            ))}
+          </nav>
+        </ScrollArea>
+
+        <div className="p-4 border-t">
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3"
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          >
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {sidebarOpen && <span>{theme === 'dark' ? 'الوضع الفاتح' : 'الوضع الداكن'}</span>}
+          </Button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className={cn(
+        "flex-1 transition-all duration-300 flex flex-col",
+        sidebarOpen ? "mr-64" : "mr-16"
+      )}>
+        <header className="h-16 border-b bg-card/50 backdrop-blur sticky top-0 z-40 shrink-0">
+          <div className="h-full px-6 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="بحث..."
+                  className="h-9 w-64 pr-9 pl-4 rounded-lg border bg-background text-sm text-right"
+                  dir="rtl"
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <Badge variant="outline" className="gap-1">
+                <div className="h-2 w-2 rounded-full bg-green-500" />
+                النظام نشط
+              </Badge>
+              <Link href="/">
+                <Button variant="outline" size="sm">
+                  الرئيسية
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        <div className="flex-1 p-6 overflow-hidden">
+          <div className="h-full">
+            {children}
+          </div>
+        </div>
+
+        <footer className="h-12 border-t flex items-center justify-center text-xs text-muted-foreground shrink-0">
+          <p>نظام القرآن الكريم - لوحة التحكم v1.0.0 • Next.js 16 • Prisma</p>
+        </footer>
+      </main>
+    </div>
+  );
+}
