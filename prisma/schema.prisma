@@ -1102,3 +1102,34 @@ model TtfDiscriminator {
   @@index([editionId])
   @@map("ttf_discriminators")
 }
+
+// ==================== Module Installation System ====================
+
+model InstalledModule {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  version         String
+  author          String?
+  category        String?
+  
+  // Installation Status
+  installed       Boolean   @default(true)
+  installedAt     DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Configuration
+  autoInstall     Boolean   @default(false)
+  application     Boolean   @default(true)
+  
+  // Dependencies
+  depends         String?   // JSON array of module names
+  
+  // Statistics
+  openCount       Int       @default(0)
+  lastOpenedAt    DateTime?
+
+  @@index([name])
+  @@index([installed])
+  @@index([category])
+  @@map("installed_modules")
+}

@@ -285,19 +285,78 @@ export default function AppsStore() {
     return matchesSearch && matchesCategory && matchesView;
   });
 
+  // Load modules from API on mount
+  useEffect(() => {
+    loadModules();
+  }, []);
+
+  const loadModules = async () => {
+    try {
+      const response = await fetch('/api/modules');
+      const data = await response.json();
+      
+      if (data.success) {
+        // Update appsRegistry with installation status from database
+        data.data.forEach((mod: any) => {
+          const app = appsRegistry.find(a => a.id === mod.name);
+          if (app) {
+            app.installed = mod.installed;
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load modules:', error);
+    }
+  };
+
   // Handlers
   const handleInstall = async (appId: string) => {
     setIsInstalling(appId);
-    // Simulate installation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    const app = appsRegistry.find(a => a.id === appId);
-    if (app) app.installed = true;
+    
+    try {
+      const response = await fetch('/api/modules/install', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: appId })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Update local state
+        const app = appsRegistry.find(a => a.id === appId);
+        if (app) app.installed = true;
+        
+        // Also mark dependencies as installed
+        if (data.data?.installed) {
+          data.data.installed.forEach((modName: string) => {
+            const depApp = appsRegistry.find(a => a.id === modName);
+            if (depApp) depApp.installed = true;
+          });
+        }
+      } else {
+        console.error('Installation failed:', data.error);
+      }
+    } catch (error) {
+      console.error('Installation error:', error);
+    }
+    
     setIsInstalling(null);
   };
 
   const handleOpenApp = (appId: string) => {
     const app = appsRegistry.find(a => a.id === appId);
     if (app) {
+      // Navigate to the actual route instead of showing inline view
+      if (appId === 'quran') {
+        window.location.href = '/quran';
+        return;
+      }
+      if (appId === 'web_admin') {
+        window.location.href = '/admin';
+        return;
+      }
+      // For other apps, show inline view
       setCurrentApp(app);
       setActiveView('app');
     }

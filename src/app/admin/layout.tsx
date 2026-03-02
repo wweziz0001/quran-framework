@@ -1,17 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
 import { 
   LayoutDashboard, Database, Code, Shield, Settings, 
   BookOpen, Headphones, Cloud, FolderOpen,
   Menu, Moon, Sun, Search, Users, Import,
-  BookMarked
+  BookMarked, AlertCircle, Download, ArrowRight
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -45,6 +48,77 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
+  
+  // Module installation state
+  const [moduleStatus, setModuleStatus] = useState<{
+    checked: boolean;
+    installed: boolean;
+    installing: boolean;
+    error: string | null;
+  }>({
+    checked: false,
+    installed: false,
+    installing: false,
+    error: null
+  });
+
+  // Check module installation on mount
+  useEffect(() => {
+    checkModuleInstallation();
+  }, []);
+
+  const checkModuleInstallation = async () => {
+    try {
+      const response = await fetch('/api/modules/check/web_admin');
+      const data = await response.json();
+      
+      setModuleStatus({
+        checked: true,
+        installed: data.success && data.data?.installed,
+        installing: false,
+        error: null
+      });
+    } catch (error) {
+      setModuleStatus({
+        checked: true,
+        installed: false,
+        installing: false,
+        error: 'فشل في التحقق من حالة الوحدة'
+      });
+    }
+  };
+
+  const handleInstall = async () => {
+    setModuleStatus(prev => ({ ...prev, installing: true, error: null }));
+    
+    try {
+      const response = await fetch('/api/modules/install', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'web_admin' })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        router.refresh();
+        window.location.reload();
+      } else {
+        setModuleStatus(prev => ({
+          ...prev,
+          installing: false,
+          error: data.error || 'فشل في التثبيت'
+        }));
+      }
+    } catch (error) {
+      setModuleStatus(prev => ({
+        ...prev,
+        installing: false,
+        error: 'فشل في التثبيت'
+      }));
+    }
+  };
 
   const isActive = (href: string) => {
     if (href === '/admin') {
@@ -52,6 +126,83 @@ export default function AdminLayout({
     }
     return pathname.startsWith(href);
   };
+
+  // Loading state
+  if (!moduleStatus.checked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-full max-w-md space-y-4 p-4">
+          <Skeleton className="h-8 w-3/4 mx-auto" />
+          <Skeleton className="h-4 w-1/2 mx-auto" />
+          <Skeleton className="h-32 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  // Module not installed
+  if (!moduleStatus.installed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/20 flex items-center justify-center mb-4">
+              <AlertCircle className="w-8 h-8 text-amber-600" />
+            </div>
+            <CardTitle className="text-xl">
+              لوحة التحكم غير مثبتة
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                وحدة <strong>لوحة التحكم</strong> غير مثبتة في النظام.
+                <br />
+                يرجى تثبيتها من متجر التطبيقات أو تثبيتها الآن.
+              </AlertDescription>
+            </Alert>
+
+            {moduleStatus.error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{moduleStatus.error}</AlertDescription>
+              </Alert>
+            )}
+
+            <div className="flex flex-col gap-2">
+              <Button 
+                onClick={handleInstall} 
+                disabled={moduleStatus.installing}
+                className="w-full"
+              >
+                {moduleStatus.installing ? (
+                  <>
+                    <Download className="w-4 h-4 mr-2 animate-bounce" />
+                    جاري التثبيت...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4 mr-2" />
+                    تثبيت الآن
+                  </>
+                )}
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                onClick={() => router.push('/')}
+                className="w-full"
+              >
+                <ArrowRight className="w-4 h-4 ml-2" />
+                العودة لمتجر التطبيقات
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex">
